@@ -8,6 +8,7 @@ import Withdrawals from './pages/Withdrawals';
 import KYC from './pages/KYC';
 import Profile from './pages/Profile';
 import AdminPanel from './pages/AdminPanel';
+import AdminMonitoring from './pages/AdminMonitoring';
 import './App.css';
 
 function App() {
@@ -17,7 +18,10 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      setUser(JSON.parse(localStorage.getItem('user')));
+      const userData = localStorage.getItem('user');
+      if (userData) {
+        setUser(JSON.parse(userData));
+      }
     }
     setLoading(false);
   }, []);
@@ -29,7 +33,14 @@ function App() {
   };
 
   if (loading) {
-    return <div className="flex justify-center items-center h-screen">Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen bg-gradient-to-br from-blue-600 to-purple-700">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+          <p className="text-white text-lg">🚀 DrPayment Loading...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -43,7 +54,8 @@ function App() {
         <Route path="/kyc" element={user ? <KYC user={user} onLogout={handleLogout} /> : <Navigate to="/login" />} />
         <Route path="/profile" element={user ? <Profile user={user} onLogout={handleLogout} /> : <Navigate to="/login" />} />
         <Route path="/admin" element={user?.role === 'admin' ? <AdminPanel user={user} onLogout={handleLogout} /> : <Navigate to="/login" />} />
-        <Route path="/" element={user ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
+        <Route path="/admin-monitoring" element={user?.role === 'admin' ? <AdminMonitoring user={user} onLogout={handleLogout} /> : <Navigate to="/login" />} />
+        <Route path="/" element={user ? <Navigate to={user.role === 'admin' ? '/admin-monitoring' : '/dashboard'} /> : <Navigate to="/login" />} />
       </Routes>
     </Router>
   );

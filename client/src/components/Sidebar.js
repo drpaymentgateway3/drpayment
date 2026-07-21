@@ -20,6 +20,18 @@ function Sidebar({ user, onLogout }) {
       </div>
 
       <nav className="mb-8">
+        {user?.role === 'admin' && (
+          <>
+            <Link to="/admin-monitoring" className={`nav-link ${isActive('/admin-monitoring')}`}>
+              🔐 Admin Monitor
+            </Link>
+            <Link to="/admin" className={`nav-link ${isActive('/admin')}`}>
+              ⚙️ Admin Panel
+            </Link>
+            <hr className="my-4 border-gray-400" />
+          </>
+        )}
+        
         <Link to="/dashboard" className={`nav-link ${isActive('/dashboard')}`}>
           📊 Dashboard
         </Link>
@@ -35,18 +47,13 @@ function Sidebar({ user, onLogout }) {
         <Link to="/profile" className={`nav-link ${isActive('/profile')}`}>
           👤 Profile
         </Link>
-        {user?.role === 'admin' && (
-          <Link to="/admin" className={`nav-link ${isActive('/admin')}`}>
-            🔒 Admin Panel
-          </Link>
-        )}
       </nav>
 
       <div className="border-t border-gray-400 pt-4">
         <div className="text-sm mb-4">
           <p className="text-gray-300">Logged in as:</p>
           <p className="font-semibold text-white">{user?.username}</p>
-          <p className="text-xs text-gray-400 capitalize">{user?.role}</p>
+          <p className="text-xs text-gray-400 capitalize">🎯 {user?.role}</p>
         </div>
         <button
           onClick={handleLogout}
