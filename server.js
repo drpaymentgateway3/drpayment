@@ -8,9 +8,21 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'https://drpayment.vercel.app',
+    'https://drpayment-web.vercel.app',
+    process.env.FRONTEND_URL
+  ],
+  credentials: true
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Serve static files
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
@@ -32,8 +44,14 @@ app.get('/api/health', (req, res) => {
     status: 'OK', 
     message: 'DrPayment Gateway is running',
     timestamp: new Date().toISOString(),
-    version: '1.0.0'
+    version: '1.0.0',
+    environment: process.env.NODE_ENV
   });
+});
+
+// Serve React app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/build/index.html'));
 });
 
 // Error Handling
@@ -45,8 +63,10 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`\n🚀 DrPayment Gateway v1.0.0`);
-  console.log(`📍 Server running on http://localhost:${PORT}`);
-  console.log(`📊 Dashboard: http://localhost:3000`);
+  console.log(`📋 Server running on http://localhost:${PORT}`);
+  console.log(`📊 Dashboard: http://localhost:${PORT}`);
   console.log(`📚 API Docs: http://localhost:${PORT}/api/documentation`);
   console.log(`\n✅ Ready to accept payments!\n`);
 });
+
+module.exports = app;

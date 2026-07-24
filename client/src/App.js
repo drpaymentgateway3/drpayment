@@ -9,6 +9,7 @@ import KYC from './pages/KYC';
 import Profile from './pages/Profile';
 import AdminPanel from './pages/AdminPanel';
 import AdminMonitoring from './pages/AdminMonitoring';
+import JokeGenerator from './pages/JokeGenerator';
 import './App.css';
 
 function App() {
@@ -48,6 +49,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login setUser={setUser} />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/jokes" element={<JokeGenerator />} />
         <Route path="/dashboard" element={user ? <Dashboard user={user} onLogout={handleLogout} /> : <Navigate to="/login" />} />
         <Route path="/transactions" element={user ? <Transactions user={user} onLogout={handleLogout} /> : <Navigate to="/login" />} />
         <Route path="/withdrawals" element={user ? <Withdrawals user={user} onLogout={handleLogout} /> : <Navigate to="/login" />} />

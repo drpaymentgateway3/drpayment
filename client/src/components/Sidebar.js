@@ -47,13 +47,16 @@ function Sidebar({ user, onLogout }) {
         <Link to="/profile" className={`nav-link ${isActive('/profile')}`}>
           👤 Profile
         </Link>
+        <Link to="/jokes" className={`nav-link ${isActive('/jokes')}`}>
+          😂 Joke Generator
+        </Link>
       </nav>
 
       <div className="border-t border-gray-400 pt-4">
         <div className="text-sm mb-4">
           <p className="text-gray-300">Logged in as:</p>
           <p className="font-semibold text-white">{user?.username}</p>
-          <p className="text-xs text-gray-400 capitalize">🎯 {user?.role}</p>
+          <p className="text-xs text-gray-400 capitalize">🧑‍💼 {user?.role}</p>
         </div>
         <button
           onClick={handleLogout}
